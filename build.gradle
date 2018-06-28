@@ -1,0 +1,85 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'net.wasdev.wlp.gradle.plugins', name: 'liberty-gradle-plugin', version: '2.4.1'
+    }
+}
+plugins {
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.5"
+}
+apply plugin: 'liberty'
+apply plugin: 'war'
+
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+configurations {
+    warOnly
+}
+
+dependencies {
+    compile 'javax:javaee-api:7.0'
+    compile 'org.springframework:spring-web:4.3.2.RELEASE'
+    compile 'org.springframework:spring-webmvc:4.3.2.RELEASE'
+    compile 'org.springframework:spring-tx:4.3.2.RELEASE'
+    compile 'org.springframework:spring-aspects:4.3.2.RELEASE'
+    compile 'org.springframework.data:spring-data-jpa:1.9.4.RELEASE'
+    compile 'org.slf4j:slf4j-api:1.7.21'
+    compile 'org.slf4j:slf4j-ext:1.7.21'
+    compile 'org.projectlombok:lombok:1.14.8'
+    compile 'javax.validation:validation-api:1.1.0.Final'
+    compile 'javax.el:javax.el-api:2.2.5'
+    compile 'org.hibernate:hibernate-validator:5.2.4.Final'
+    compile 'com.mysema.querydsl:querydsl-jpa:3.6.9'
+    compile 'com.mysema.querydsl:querydsl-core:3.6.9'
+    compileOnly 'com.mysema.querydsl:querydsl-apt:3.6.9'
+    compile 'org.hibernate:hibernate-core:4.2.20.Final'
+    compile 'org.hibernate:hibernate-entitymanager:4.2.20.Final'
+    compile 'org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final'
+    compile 'joda-time:joda-time:2.8.2'
+    compile 'commons-dbcp:commons-dbcp:1.4'
+
+
+    testCompile group: 'com.h2database', name: 'h2', version: '1.4.197'
+    testCompile 'org.springframework:spring-test:4.3.2.RELEASE'
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.slf4j:slf4j-log4j12:1.7.21'
+    testCompile 'log4j:log4j:1.2.15'
+
+    warOnly 'org.slf4j:slf4j-jdk14:1.7.21'
+    warOnly 'org.slf4j:jcl-over-slf4j:1.7.21'
+    warOnly 'org.slf4j:log4j-over-slf4j:1.7.21'
+    libertyRuntime group: 'com.ibm.websphere.appserver.runtime', name: 'wlp-javaee7', version: '8.5.5.8'
+
+}
+
+war {
+    classpath configurations.warOnly
+}
+
+querydsl {
+    library = 'com.mysema.querydsl:querydsl-apt:3.6.9'
+    querydslDefault = true
+}
+
+initQuerydslSourcesDir.inputs.dir "$project.projectDir/src/main/java/com/github/corneil/model"
+initQuerydslSourcesDir.outputs.dir "$project.projectDir/src/suerydsl/java"
+
+liberty {
+    installDir = "$project.buildDir/wlp"
+    server {
+        apps = [war]
+    }
+}
+
+task copyDb2Drivers(type:Copy) {
+    into "$project.buildDir/wlp/lib/shared"
+    from "$project.projectDir/lib/db2"
+}
+
+installApps.dependsOn copyDb2Drivers
+copyDb2Drivers.mustRunAfter installLiberty

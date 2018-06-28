@@ -1,0 +1,17 @@
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         metadata-complete="false"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+	      http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
+    <display-name>Test App</display-name>
+    <resource-ref>
+        <res-ref-name>jdbc/test-ds</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+    </resource-ref>
+    <resource-ref>
+        <res-ref-name>concurrent/scheduledExecutor</res-ref-name>
+        <res-type>javax.enterprise.concurrent.ManagedScheduledExecutorService</res-type>
+        <res-sharing-scope>Unshareable</res-sharing-scope>
+    </resource-ref>
+</web-app>

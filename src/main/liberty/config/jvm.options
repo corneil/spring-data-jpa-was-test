@@ -1,0 +1,5 @@
+-Xmx3072m
+# -XX:ReservedCodeCacheSize=512m
+-XX:MaxPermSize=1024m
+-XX:PermSize=512m
+-Dspring.profiles.active=WLP,DB2,JTA

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server description="RLA Branch Server">
+    <featureManager>
+        <feature>javaee-7.0</feature>
+    </featureManager>
+    <logging consoleLogLevel="info"
+             traceSpecification="*=config:com.ibm.*=detail:com.github.corneil.*=all:org.hibernate.*=config:org.springframework.transaction.support.AbstractPlatformTransactionManager=warning:org.springframework.*=config"
+             traceFormat="ADVANCED"/>
+    <webContainer invokeFlushAfterService="false" deferServletLoad="false"/>
+    <httpEndpoint id="defaultHttpEndpoint" host="*" httpPort="9080">
+        <tcpOptions soReuseAddr="true"/>
+    </httpEndpoint>
+    <library id="DB2Lib">
+        <fileset dir="${wlp.install.dir}/lib/shared" includes="db2*.jar"/>
+    </library>
+    <dataSource id="test" jndiName="jdbc/test-ds" type="javax.sql.XADataSource">
+        <jdbcDriver libraryRef="DB2Lib"/>
+        <properties.db2.jcc currentSchema="TEST" databaseName="${db.database}" serverName="${db.host}" portNumber="${db.port}" user="${db.user}" password="${db.pwd}"/>
+        <containerAuthData user="${db.user}" password="${db.pwd}"/>
+    </dataSource>
+    <managedThreadFactory jndiName="concurrent/threadFactory">
+        <contextService>
+            <classloaderContext/>
+            <jeeMetadataContext/>
+            <securityContext/>
+        </contextService>
+    </managedThreadFactory>
+    <managedScheduledExecutorService jndiName="concurrent/scheduledExecutor1">
+        <contextService>
+            <classloaderContext/>
+            <jeeMetadataContext/>
+            <securityContext/>
+        </contextService>
+        <concurrencyPolicy max="5"/>
+    </managedScheduledExecutorService>
+    <managedExecutorService jndiName="concurrent/executor">
+        <contextService>
+            <classloaderContext/>
+            <jeeMetadataContext/>
+            <securityContext/>
+        </contextService>
+    </managedExecutorService>
+    <applicationMonitor updateTrigger="mbean"/>
+</server>
+
