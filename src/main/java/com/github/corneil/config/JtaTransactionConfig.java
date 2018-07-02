@@ -16,7 +16,7 @@ import org.springframework.transaction.jta.WebSphereUowTransactionManager;
 import javax.naming.NamingException;
 import javax.persistence.EntityManagerFactory;
 
-@EnableTransactionManagement(mode = AdviceMode.ASPECTJ)
+@EnableTransactionManagement(proxyTargetClass = true)
 @Import(JndiTemplateConfig.class)
 @Profile("JTA")
 public class JtaTransactionConfig {

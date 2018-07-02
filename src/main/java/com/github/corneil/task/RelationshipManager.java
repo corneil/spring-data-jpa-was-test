@@ -13,6 +13,7 @@ import org.joda.time.LocalDateTime;
 import org.joda.time.format.ISODateTimeFormat;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ import java.util.Map;
 
 @XSlf4j
 @Service
-@Transactional
+@Transactional(propagation = Propagation.REQUIRED)
 public class RelationshipManager implements RelationshipInterface {
 	Environment environment;
 	RelationshipRepository relationshipRepository;
@@ -43,6 +44,7 @@ public class RelationshipManager implements RelationshipInterface {
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
 	public int checkExpired() {
 		log.info("checkExpired:start");
 		int expiredPending = 0;

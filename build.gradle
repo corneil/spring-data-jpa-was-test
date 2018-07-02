@@ -53,7 +53,7 @@ dependencies {
     warOnly 'org.slf4j:slf4j-jdk14:1.7.21'
     warOnly 'org.slf4j:jcl-over-slf4j:1.7.21'
     warOnly 'org.slf4j:log4j-over-slf4j:1.7.21'
-    libertyRuntime group: 'com.ibm.websphere.appserver.runtime', name: 'wlp-javaee7', version: '8.5.5.8'
+    libertyRuntime group: 'com.ibm.websphere.appserver.runtime', name: 'wlp-javaee7', version: '8.5.5.9'
 
 }
 
