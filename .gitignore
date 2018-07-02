@@ -94,3 +94,5 @@ gradle-app.setting
 
 !/lib/db2/db2cc-2.0.jar
 !/lib/db2/db2cc-license-2.0.jar
+/.idea/sonarlint/
+!/.idea/runConfigurations/
